@@ -21,6 +21,11 @@ function SignupPage() {
     e.preventDefault();
     setError(null);
 
+    if (!email.toLowerCase().endsWith("@dacit.co.uk")) {
+      setError("Only @dacit.co.uk email addresses are allowed.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -102,7 +107,7 @@ function SignupPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder="you@dacit.co.uk"
           />
 
           <TextInput

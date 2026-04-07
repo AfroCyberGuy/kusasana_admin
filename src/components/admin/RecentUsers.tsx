@@ -42,7 +42,7 @@ function avatar(name: string) {
 }
 
 const COLORS = [
-  "bg-rose-400",
+  "bg-primary-400",
   "bg-violet-400",
   "bg-sky-400",
   "bg-amber-400",
@@ -64,7 +64,7 @@ export default function RecentUsers({ users, loading }: RecentUsersProps) {
         </div>
         <button
           type="button"
-          className="text-sm text-rose-500 font-medium hover:underline"
+          className="text-sm text-primary-500 font-medium hover:underline"
         >
           View all
         </button>

@@ -1,8 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Settings, Bell, Shield, Globe } from "lucide-react";
+import { supabase } from "../../utils/supabase";
 import AdminLayout from "../../components/admin/AdminLayout";
 
 export const Route = createFileRoute("/settings/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
   component: SettingsPage,
 });
 
@@ -54,7 +59,7 @@ function Toggle({
           defaultChecked={defaultChecked}
           className="sr-only peer"
         />
-        <div className="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:bg-rose-500 peer-focus:ring-2 peer-focus:ring-rose-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5" />
+        <div className="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:bg-primary-500 peer-focus:ring-2 peer-focus:ring-primary-300 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5" />
       </label>
     </div>
   );
@@ -76,7 +81,7 @@ export default function SettingsPage() {
             <input
               type="text"
               defaultValue="Kusasana Dating"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none focus:ring-2 focus:ring-rose-300"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none focus:ring-2 focus:ring-primary-300"
             />
           </div>
           <div>
@@ -86,7 +91,7 @@ export default function SettingsPage() {
             <input
               type="email"
               defaultValue="support@kusasana.app"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none focus:ring-2 focus:ring-rose-300"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none focus:ring-2 focus:ring-primary-300"
             />
           </div>
           <div>
@@ -96,7 +101,7 @@ export default function SettingsPage() {
             <input
               type="number"
               defaultValue={20}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none focus:ring-2 focus:ring-rose-300"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none focus:ring-2 focus:ring-primary-300"
             />
           </div>
         </Section>
@@ -155,7 +160,7 @@ export default function SettingsPage() {
       <div className="mt-4 max-w-4xl flex justify-end">
         <button
           type="button"
-          className="px-5 py-2 bg-rose-500 text-white text-sm font-medium rounded-xl hover:bg-rose-600 transition-colors"
+          className="px-5 py-2 bg-primary-500 text-white text-sm font-medium rounded-xl hover:bg-primary-600 transition-colors"
         >
           Save Changes
         </button>

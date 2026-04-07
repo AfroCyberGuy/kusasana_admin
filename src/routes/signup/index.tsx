@@ -1,10 +1,19 @@
-import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useRouter,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "../../components/library/Button";
 import { TextInput } from "../../components/library/TextInput";
 import { supabase } from "../../utils/supabase";
 
 export const Route = createFileRoute("/signup/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) throw redirect({ to: "/" });
+  },
   component: SignupPage,
 });
 

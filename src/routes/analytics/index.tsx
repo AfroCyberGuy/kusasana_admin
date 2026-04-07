@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { supabase } from "../../utils/supabase";
 import AdminLayout from "../../components/admin/AdminLayout";
 import ActivityChart from "../../components/admin/ActivityChart";
 import {
@@ -16,6 +17,10 @@ import {
 } from "recharts";
 
 export const Route = createFileRoute("/analytics/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
   component: AnalyticsPage,
 });
 

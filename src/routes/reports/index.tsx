@@ -1,10 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2, Check, X, Tag } from "lucide-react";
 import { supabase } from "../../utils/supabase";
 import AdminLayout from "../../components/admin/AdminLayout";
 
 export const Route = createFileRoute("/reports/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
   component: InterestsPage,
 });
 
@@ -103,13 +107,13 @@ export default function InterestsPage() {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-            className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-rose-300 shadow-sm placeholder-gray-400"
+            className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-primary-300 shadow-sm placeholder-gray-400"
           />
           <button
             type="button"
             onClick={handleAdd}
             disabled={adding || !newName.trim()}
-            className="flex items-center gap-1.5 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium rounded-xl shadow-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-xl shadow-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Plus className="w-4 h-4" />
             Add
@@ -119,7 +123,7 @@ export default function InterestsPage() {
         {/* List */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
-            <Tag className="w-5 h-5 text-rose-500" />
+            <Tag className="w-5 h-5 text-primary-500" />
             <h2 className="text-base font-semibold text-gray-800">
               All Interests
             </h2>
@@ -154,7 +158,7 @@ export default function InterestsPage() {
                           if (e.key === "Enter") handleSaveEdit(item.uuid);
                           if (e.key === "Escape") setEditingId(null);
                         }}
-                        className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-rose-300"
+                        className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-primary-300"
                       />
                       <button
                         type="button"

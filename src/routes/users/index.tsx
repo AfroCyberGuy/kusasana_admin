@@ -1,10 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Search, Filter, Ban, CheckCircle, Trash2, Eye } from "lucide-react";
 import { supabase } from "../../utils/supabase";
 import AdminLayout from "../../components/admin/AdminLayout";
 
 export const Route = createFileRoute("/users/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
   component: UsersPage,
 });
 
@@ -23,7 +27,7 @@ interface Profile {
 }
 
 const COLORS = [
-  "bg-rose-400",
+  "bg-primary-400",
   "bg-violet-400",
   "bg-sky-400",
   "bg-amber-400",
@@ -158,7 +162,7 @@ export default function UsersPage() {
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
                 filter === f
-                  ? "bg-rose-500 text-white"
+                  ? "bg-primary-500 text-white"
                   : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
               }`}
             >

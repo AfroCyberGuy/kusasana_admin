@@ -49,10 +49,10 @@ export default function TopBar({ title }: TopBarProps) {
         className="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
       >
         <Bell className="w-5 h-5" />
-        <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full" />
+        <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-500 rounded-full" />
       </button>
       <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
-        <div className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center text-white text-sm font-semibold">
+        <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-white text-sm font-semibold">
           A
         </div>
         <span className="hidden md:block text-sm font-medium text-gray-700">

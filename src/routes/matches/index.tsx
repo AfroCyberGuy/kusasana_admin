@@ -1,10 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Search, Trash2, Users } from "lucide-react";
 import { supabase } from "../../utils/supabase";
 import AdminLayout from "../../components/admin/AdminLayout";
 
 export const Route = createFileRoute("/matches/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
   component: RoomsPage,
 });
 
@@ -18,7 +22,7 @@ interface Room {
 }
 
 const COLORS = [
-  "bg-rose-400",
+  "bg-primary-400",
   "bg-violet-400",
   "bg-sky-400",
   "bg-amber-400",
@@ -134,7 +138,7 @@ export default function RoomsPage() {
       {/* Table */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
-          <Users className="w-5 h-5 text-rose-500" />
+          <Users className="w-5 h-5 text-primary-500" />
           <h2 className="text-base font-semibold text-gray-800">All Rooms</h2>
         </div>
         <div className="overflow-x-auto">

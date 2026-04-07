@@ -1,10 +1,19 @@
-import { Link, createFileRoute, useRouter } from "@tanstack/react-router";
+import {
+  Link,
+  createFileRoute,
+  redirect,
+  useRouter,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "../../components/library/Button";
 import { TextInput } from "../../components/library/TextInput";
 import { supabase } from "../../utils/supabase";
 
 export const Route = createFileRoute("/login/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) throw redirect({ to: "/" });
+  },
   component: LoginPage,
 });
 
@@ -46,7 +55,7 @@ function LoginPage() {
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg px-8 py-10">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-            Welcome back
+            Kusasana Admin
           </h1>
           <p className="mt-1 text-sm text-gray-500">Sign in to your account</p>
         </div>

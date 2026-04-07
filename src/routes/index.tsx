@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Users, Heart, MessageSquare, Flag } from "lucide-react";
 import { supabase } from "../utils/supabase";
@@ -9,6 +9,10 @@ import ActivityChart from "../components/admin/ActivityChart";
 import UserMap from "../components/admin/UserMap";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
   component: DashboardPage,
 });
 
@@ -137,7 +141,7 @@ function DashboardPage() {
           change="11%"
           positive
           icon={Users}
-          color="bg-rose-500"
+          color="bg-primary-500"
         />
         <StatCard
           title="Total Matches"

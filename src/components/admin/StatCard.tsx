@@ -27,7 +27,7 @@ export default function StatCard({
         <p className="text-2xl font-bold text-gray-900 mt-0.5">{value}</p>
         {change && (
           <p
-            className={`text-xs mt-1 font-medium ${positive ? "text-emerald-600" : "text-rose-500"}`}
+            className={`text-xs mt-1 font-medium ${positive ? "text-emerald-600" : "text-primary-500"}`}
           >
             {positive ? "↑" : "↓"} {change} vs last month
           </p>

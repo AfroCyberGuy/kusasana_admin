@@ -1,10 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Search, Flag, AlertTriangle, Ban } from "lucide-react";
 import { supabase } from "../../utils/supabase";
 import AdminLayout from "../../components/admin/AdminLayout";
 
 export const Route = createFileRoute("/messages/")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
   component: ReportsPage,
 });
 
@@ -25,7 +29,7 @@ const REASON_COLORS: Record<string, string> = {
   harassment: "bg-red-100 text-red-700",
   fake: "bg-orange-100 text-orange-700",
   inappropriate: "bg-purple-100 text-purple-700",
-  scam: "bg-rose-100 text-rose-700",
+  scam: "bg-primary-100 text-primary-700",
 };
 
 export default function ReportsPage() {

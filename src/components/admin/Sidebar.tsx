@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   Users,
@@ -12,6 +12,7 @@ import {
   Flame,
 } from "lucide-react";
 import { useState } from "react";
+import { supabase } from "../../utils/supabase";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", to: "/" },
@@ -25,8 +26,14 @@ const navItems = [
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const router = useRouterState();
-  const currentPath = router.location.pathname;
+  const routerState = useRouterState();
+  const router = useRouter();
+  const currentPath = routerState.location.pathname;
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.navigate({ to: "/login" });
+  }
 
   return (
     <aside
@@ -34,7 +41,7 @@ export default function Sidebar() {
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-700">
-        <div className="flex-shrink-0 w-8 h-8 bg-rose-500 rounded-lg flex items-center justify-center">
+        <div className="flex-shrink-0 w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
           <Flame className="w-5 h-5 text-white" />
         </div>
         {!collapsed && (
@@ -63,7 +70,7 @@ export default function Sidebar() {
               to={to}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 active
-                  ? "bg-rose-500 text-white"
+                  ? "bg-primary-500 text-white"
                   : "text-gray-400 hover:bg-gray-800 hover:text-white"
               }`}
             >
@@ -76,13 +83,14 @@ export default function Sidebar() {
 
       {/* Logout */}
       <div className="px-2 py-4 border-t border-gray-700">
-        <Link
-          to="/login"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
         >
           <LogOut className="w-5 h-5 flex-shrink-0" />
           {!collapsed && <span>Logout</span>}
-        </Link>
+        </button>
       </div>
     </aside>
   );
